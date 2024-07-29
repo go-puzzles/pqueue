@@ -33,8 +33,8 @@ type RedisQueue[T Item] struct {
 	queue  string
 }
 
-func NewRedisQueue[T Item](client *predis.RedisClient, queue string) *RedisQueue[T] {
-	return &RedisQueue[T]{client: client, queue: queue}
+func NewRedisQueue[T Item](pool *redis.Pool, queue string) *RedisQueue[T] {
+	return &RedisQueue[T]{client: predis.NewRedisClient(pool), queue: queue}
 }
 
 func (q *RedisQueue[T]) Do(command string, args ...any) (reply any, err error) {
