@@ -17,6 +17,15 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	memoryQueue = NewMemoryQueue[string]()
+
+	go func() {
+		for i := range 100 {
+			memoryQueue.Enqueue(fmt.Sprintf("this is index %v", i))
+			time.Sleep(time.Second)
+		}
+	}()
+
 	redisConf := &predis.RedisConf{
 		Server: "localhost:6379",
 		Db:     12,
